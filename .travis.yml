@@ -1,0 +1,16 @@
+language: go
+sudo: false
+go:
+  - "1.9.x"
+  - "1.10.x"
+  - master
+matrix:
+  fast_finish: true  
+  allow_failures:
+    - go: master
+before_script:
+  - GO_FILES=$(find . -iname '*.go' -type f)
+  - go get -u golang.org/x/lint/golint
+script:
+  - test -z $(gofmt -s -l $GO_FILES)
+  - golint -set_exit_status $(go list ./...)
